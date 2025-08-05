@@ -101,7 +101,7 @@ heading or the end of the buffer."
         (insert content)
         (goto-char (point-min))
         (org-delete-property "DIR")
-        (org-set-property "DIR" dir)
+        (when dir (org-set-property "DIR" dir))
         (let ((headline (org-element-at-point)))
           (buffer-substring
            (org-element-property :contents-begin headline)
@@ -279,9 +279,9 @@ headings."
       (org-mode)
       
       ;; Configure display settings
-      (setq-local org-hide-leading-stars t)
-      (setq-local org-startup-folded t)
-      (setq-local org-adapt-indentation nil)
+      (setq-local org-hide-leading-stars t
+                  org-startup-folded t
+                  org-adapt-indentation nil)
       (org-num-mode t)
       
       ;; Title with ID system status
@@ -293,7 +293,7 @@ headings."
       ;; Render cards
       (let ((cards (org-workbench--get-cards)))
         (if (null cards)
-            (insert "Workbench is empty.\n\nM-x org-workbench-add-subtree/M-x org-workbench-add-heading to add cards.")
+            (insert "Workbench is empty.\n\nM-x org-workbench-add-heading to add cards.")
           (dolist (card cards)
             (let* ((start (point))
                    (title (plist-get card :title))
